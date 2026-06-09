@@ -1,3 +1,25 @@
-<h1>Olá, chat!</h1>
+<h1 class="py-2">Conversas</h1>
 
-<%= Date.today %>
+<% if session[:error] %>
+  <p class="alert alert-danger">
+    <%= session.delete(:error) %>
+  </p>
+<% end %>
+
+<h5>Existem <strong>X</strong> conversas criadas</h5>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Pergunta</th>
+      <th>Data e hora</th>
+    </tr>
+  </thead>
+  <tbody>
+
+  </tbody>
+</table>
+
+<div class="py-5 text-muted">
+  <a href="/new" class="btn btn-outline-primary">Criar nova conversa</a>
+</div>
