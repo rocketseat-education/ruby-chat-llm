@@ -10,6 +10,7 @@ get "/chats" do
     content_type :json
     [ { id: 1 } ].to_json
   else
+    @chats = Chat.all.order("created_at DESC")
     erb :index
   end
 end
@@ -50,9 +51,14 @@ delete "/chats/:id" do
 end
 
 get "/refresh" do
+  Model.refresh!
+  @count = Model.count
+
   if json?
     content_type :json
-    [ { message: "refreshed" } ].to_json
+    [ { message: "#{@count} modelos carregados" } ].to_json
+  else
+    erb :refresh
   end
 end
 
