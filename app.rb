@@ -7,22 +7,18 @@ get "/" do
 end
 
 get "/chats" do
+  @chats = Chat.all.order("created_at DESC")
+
   if json?
     content_type :json
-    [ { id: 1 } ].to_json
+    @chats.map { ChatPresenter.call(it) }.to_json
   else
-    @chats = Chat.all.order("created_at DESC")
     erb :index
   end
 end
 
 get "/new" do
-  if json?
-    content_type :json
-    [ { message: "new" } ].to_json
-  else
-    erb :new
-  end
+  erb :new
 end
 
 post "/chats" do
@@ -34,7 +30,7 @@ post "/chats" do
 
   if json?
     content_type :json
-    @chat.to_json(include: :messages)
+    ChatPresenter.call(@chat).to_json
   else
     redirect "/chats/#{@chat.id}#new-message"
   end
@@ -46,7 +42,7 @@ get "/chats/:id" do
 
   if json?
     content_type :json
-    @chat.to_json(include: :messages)
+    ChatPresenter.call(@chat).to_json
   else
     erb :show
   end
@@ -63,7 +59,7 @@ post "/chats/:id/messages" do
 
   if json?
     content_type :json
-    @chat.to_json(include: :messages)
+    ChatPresenter.call(@chat).to_json
   else
     redirect "/chats/#{@chat.id}#new-message"
   end
