@@ -1,11 +1,5 @@
 <h1 class="py-2">Conversas</h1>
 
-<% if session[:error] %>
-  <p class="alert alert-danger">
-    <%= session.delete(:error) %>
-  </p>
-<% end %>
-
 <h5>Existem <strong><%= @chats.count %></strong> conversas criadas</h5>
 
 <table class="table table-striped">

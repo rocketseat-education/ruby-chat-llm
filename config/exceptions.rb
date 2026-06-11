@@ -10,3 +10,14 @@ error ChatNotFound do
     redirect "/chats"
   end
 end
+
+error do
+  exc = env["sinatra.error"]
+
+  if json?
+    status 500
+    { error: exc.message }.to_json
+  else
+    session[:error] = "Erro na aplicação: #{exc.message}"
+  end
+end
