@@ -9,6 +9,7 @@ require "ruby_llm/active_record/message_methods"
 require "ruby_llm/active_record/model_methods"
 require "ruby_llm/active_record/tool_call_methods"
 require "ruby_llm/active_record/payload_helpers"
+require "redcarpet"
 
 # Sinatra configs
 set :views, File.expand_path("../views", __dir__)

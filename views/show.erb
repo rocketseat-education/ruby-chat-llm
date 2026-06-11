@@ -6,7 +6,7 @@
       <div class="message-role">
         <%= msg.role == 'user' ? 'Você' : 'Assistente' %>
       </div>
-      <%= msg.content %>
+      <%= markdown(msg.content) %>
     </div>
   </div>
 <% end %>

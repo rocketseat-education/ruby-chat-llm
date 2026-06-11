@@ -53,16 +53,33 @@ get "/chats/:id" do
 end
 
 post "/chats/:id/messages" do
+  msg = params[:content].to_s.strip
+  raise "Mensagem não pode estar vazia" if msg.blank?
+
+  @chat = Chat.find_by(id: params[:id])
+  raise ChatNotFound unless @chat
+
+  @chat.ask(msg)
+
   if json?
     content_type :json
-    [ { message: "updated" } ].to_json
+    @chat.to_json(include: :messages)
+  else
+    redirect "/chats/#{@chat.id}#new-message"
   end
 end
 
 delete "/chats/:id" do
+  @chat = Chat.find_by(id: params[:id])
+  raise ChatNotFound unless @chat
+
+  @chat.destroy
+
   if json?
     content_type :json
-    [ { message: "deleted" } ].to_json
+    [ { message: "Apagado" } ].to_json
+  else
+    redirect "/chats"
   end
 end
 
