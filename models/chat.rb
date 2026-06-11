@@ -5,6 +5,9 @@ class Chat < ActiveRecord::Base
 
   after_create :apply_system_prompt
 
+  def input_tokens  = sum_tokens(:input_tokens)
+  def output_tokens = sum_tokens(:output_tokens)
+
   private
 
   def system_prompt
@@ -19,5 +22,9 @@ class Chat < ActiveRecord::Base
 
   def apply_system_prompt
     with_instructions(system_prompt)
+  end
+
+  def sum_tokens(attr)
+    messages.sum(attr)
   end
 end

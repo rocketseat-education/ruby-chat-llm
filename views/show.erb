@@ -10,3 +10,21 @@
     </div>
   </div>
 <% end %>
+
+<h2>Nova mensagem</h2>
+
+<form action="/chats/<%= @chat.id %>/messages" method="post">
+  <%= erb :form %>
+</form>
+<br name="new-message"/>
+
+<h5>Estatísticas</h5>
+
+<p>
+  Essa conversa consumiu até agora <strong><%= @chat.input_tokens %></strong> tokens de entrada
+  e <strong><%= @chat.output_tokens %></strong> tokens de saída.
+</p>
+
+<div class="py-5">
+  <a href="/chats" class="btn btn-primary">Retornar para as conversas</a>
+</div>

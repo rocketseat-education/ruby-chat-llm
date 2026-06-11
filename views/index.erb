@@ -7,17 +7,37 @@
 <% end %>
 
 <h5>Existem <strong><%= @chats.count %></strong> conversas criadas</h5>
-<h6>Existem <strong><%= Model.count %></strong> modelos disponíveis</h6>
 
 <table class="table table-striped">
   <thead>
     <tr>
       <th>Pergunta</th>
       <th>Data e hora</th>
+      <th colspan="2"></th>
     </tr>
   </thead>
   <tbody>
-
+    <% @chats.each do |chat| %>
+      <tr>
+        <td>
+          <%= chat.messages.where(role: :user).first.content.slice(0..100) %>
+        </td>
+        <td>
+          <%= chat.created_at.strftime("%d/%m/%Y %H:%M") %>
+        </td>
+        <td>
+          <a href="/chats/<%= chat.id %>" class="btn btn-primary">Visualizar</a>
+        </td>
+        <td>
+          <form action="/chats/<%= chat.id %>" method="post">
+            <input type="hidden" name="_method" value="DELETE" />
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Tem certeza?')">
+              Apagar
+            </button>
+          </form>
+        </td>
+      </tr>
+    <% end %>
   </tbody>
 </table>
 
