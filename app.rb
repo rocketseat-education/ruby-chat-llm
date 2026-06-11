@@ -1,5 +1,6 @@
 require_relative "./config/environment"
 require_relative "./config/helpers"
+require_relative "./config/exceptions"
 
 get "/" do
   redirect "/chats"
@@ -19,20 +20,35 @@ get "/new" do
   if json?
     content_type :json
     [ { message: "new" } ].to_json
+  else
+    erb :new
   end
 end
 
 post "/chats" do
+  msg = params[:content].to_s.strip
+  raise "Mensagem não pode estar vazia" if msg.blank?
+
+  @chat = Chat.create!(model_id: Chat::DEFAULT_MODEL)
+  @chat.ask(msg)
+
   if json?
     content_type :json
-    [ { message: "post" } ].to_json
+    @chat.to_json(include: :messages)
+  else
+    redirect "/chats/#{@chat.id}#new-message"
   end
 end
 
 get "/chats/:id" do
+  @chat = Chat.find_by(id: params[:id])
+  raise ChatNotFound unless @chat
+
   if json?
     content_type :json
-    [ { message: params[:id] } ].to_json
+    @chat.to_json(include: :messages)
+  else
+    erb :show
   end
 end
 

@@ -1,0 +1,12 @@
+<h1>Mostrando conversa</h1>
+
+<% @chat.messages.visible.each do |msg| %>
+  <div class="d-flex mb-3 <%= msg.role == 'user' ? 'justify-content-end' : 'justify-content-start' %>">
+    <div class="chat-bubble p-3 <%= msg.role %>">
+      <div class="message-role">
+        <%= msg.role == 'user' ? 'Você' : 'Assistente' %>
+      </div>
+      <%= msg.content %>
+    </div>
+  </div>
+<% end %>
