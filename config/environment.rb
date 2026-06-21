@@ -17,8 +17,12 @@ set :public_folder, File.expand_path("../public", __dir__)
 set :show_exceptions, false # não "explodir" quando tiver exceção
 set :dump_errors, false     # omita a stacktrace
 set :session_secret, ENV.fetch("SESSION_SECRET")
-set :database, { adapter: "sqlite3", database: "db/rocketchat.sqlite3" }
-
+set :database,
+    if ENV["DATABASE_URL"]
+      ActiveRecord::DatabaseConfigurations::ConnectionUrlResolver.new(ENV["DATABASE_URL"]).to_hash
+    else
+      { adapter: "sqlite3", database: "db/rocketchat.sqlite3" }
+    end
 enable :sessions
 
 # RubyLLM
